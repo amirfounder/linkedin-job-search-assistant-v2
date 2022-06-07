@@ -118,7 +118,7 @@ def scrape_linkedin_search_results_pages():
             open_tab(url)
             log_info(f'Opened URL: {idx_key}')
 
-            sleep(3)
+            sleep(5)
 
 
 def scrape_linkedin():
