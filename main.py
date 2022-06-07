@@ -1,4 +1,4 @@
-from src.linkedin import scrape_linkedin
+from src.linkedin import process_linkedin_search_results
 
 if __name__ == '__main__':
-    scrape_linkedin()
+    process_linkedin_search_results()
