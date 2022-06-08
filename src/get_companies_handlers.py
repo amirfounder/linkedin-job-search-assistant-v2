@@ -10,6 +10,7 @@ import requests
 RAW = 'data/fortune_500/raw.json'
 CONVERTED = 'data/fortune_500/converted.json'
 TECH_FILTERED = 'data/fortune_500/tech_filtered.json'
+T25_MGMGT_CONSULTING = 'data/managementconsulted/top-25.json'
 
 
 def run_scraper():
@@ -48,3 +49,7 @@ def run_filter():
 def get_top_tech_from_f500():
     data = safe_read_json_as_obj_from_file(TECH_FILTERED)
     return [d['name'] for d in data]
+
+
+def get_top_25_consulting():
+    return safe_read_json_as_obj_from_file(T25_MGMGT_CONSULTING)

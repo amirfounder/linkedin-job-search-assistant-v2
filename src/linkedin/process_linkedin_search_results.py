@@ -1,4 +1,4 @@
-from .commons import SearchResultsIndex, RecruitersIndex
+from .daos import SearchResultsIndex, RecruitersIndex
 
 
 search_results_index = SearchResultsIndex()
@@ -6,18 +6,32 @@ recruiters_index = RecruitersIndex()
 
 
 def process_linkedin_search_results():
-    data = search_results_index.data
-    for key, obj in data.items():
+    invalid_profiles = []
+
+    for key, obj in search_results_index.source.items():
         results = obj['results']
+
         for result in results:
-            profile_url = result['link'].split('?')[0]
-            recruiter_obj = {
-                'dirty_profile_url': result.get('link', 'N/A'),
-                'clean_profile_url': profile_url,
-                'search_results_idx_key': key,
+            profile_url: str = result['link'].split('?')[0]
+            sep = 'linkedin.com/in/'
+            username = profile_url.split(sep)[1] if len(profile_url.split(sep)) == 2 else None
+
+            new_obj = {
                 'name': result.get('name', 'N/A'),
-                'position': result.get('position', 'N/A')
+                'position': result.get('position', 'N/A'),
+                'url': result.get('link', 'N/A'),
+                'clean_url': profile_url,
+                'username': username,
+                'search_results_idx_key': key
             }
-            recruiters_index.add(profile_url, recruiter_obj)
+
+            if username is None:
+                invalid_profiles.append(new_obj)
+            else:
+                recruiters_index.put(username, new_obj)
+
+        recruiters_index.flush()
         print(f'Done with IDX key: {key}')
-    print(len([x for x in recruiters_index.data.values() if 'hir' in x.get('position', '').lower()]))
+
+    print(len(recruiters_index))
+    print(len(invalid_profiles))

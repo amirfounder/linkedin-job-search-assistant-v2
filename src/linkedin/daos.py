@@ -1,23 +1,11 @@
 from urllib.parse import unquote
 
-from commons import safe_read_json_as_obj_from_file, ensure_path_exists, safe_write_obj_as_json_to_file
+from commons.daos.json_index import AbstractJsonIndex
 
 
-class Index:
-    PATH = None
-
+class SearchResultsIndex(AbstractJsonIndex):
     def __init__(self):
-        ensure_path_exists(self.PATH)
-        self.data = safe_read_json_as_obj_from_file(self.PATH, {})
-
-    def add(self, key, value):
-        if key not in self.data:
-            self.data[key] = value
-            safe_write_obj_as_json_to_file(self.PATH, self.data)
-
-
-class SearchResultsIndex(Index):
-    PATH = 'data/indices/search_results.json'
+        super().__init__('data/indices/search_results.json')
 
     @staticmethod
     def build_key_from_search_query(search_query, page):
@@ -35,5 +23,6 @@ class SearchResultsIndex(Index):
         return idx_key.replace(str(curr_page), str(curr_page - 1))
 
 
-class RecruitersIndex(Index):
-    PATH = 'data/indices/recruiters.json'
+class RecruitersIndex(AbstractJsonIndex):
+    def __init__(self):
+        super().__init__('data/indices/recruiters.json')

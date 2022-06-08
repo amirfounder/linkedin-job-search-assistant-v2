@@ -1,2 +1,2 @@
-from .scrape_linkedin import scrape_linkedin
-from .process_linkedin_search_results import process_linkedin_search_results
+from .scrape_linkedin_profiles import *
+from .process_linkedin_search_results import *
