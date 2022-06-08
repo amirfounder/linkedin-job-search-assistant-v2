@@ -40,7 +40,7 @@ def scrape_linkedin_profiles():
 
         url = recruiter['clean_url']
         open_tab(url)
-        time.sleep(5)
+        time.sleep(6)
 
 
 def run_profile_scraper():
